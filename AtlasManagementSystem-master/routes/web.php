@@ -20,6 +20,7 @@ Route::group(['middleware' => ['guest']], function(){
     });
 });
 
+
 Route::group(['middleware' => 'auth'], function(){
     Route::namespace('Authenticated')->group(function(){
         Route::namespace('Top')->group(function(){
@@ -59,5 +60,7 @@ Route::group(['middleware' => 'auth'], function(){
             Route::get('/user/profile/{id}', 'UsersController@userProfile')->name('user.profile');
             Route::post('/user/profile/edit', 'UsersController@userEdit')->name('user.edit');
         });
+
+        Route::get('/layouts','UsersController@userSide');
     });
 });
