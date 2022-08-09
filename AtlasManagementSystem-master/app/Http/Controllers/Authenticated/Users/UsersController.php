@@ -11,6 +11,9 @@ use App\Models\Users\Subjects;
 use App\Searchs\DisplayUsers;
 use App\Searchs\SearchResultFactories;
 
+// これがないとコントローラーでAuthは使えない。
+use Illuminate\Support\Facades\Auth;
+
 class UsersController extends Controller
 {
 
@@ -39,17 +42,5 @@ class UsersController extends Controller
         return redirect()->route('user.profile', ['id' => $request->user_id]);
     }
 
-        //フォローリスト
-    public function userSide(){
-
-        $list = \DB::table('users')
-        ->get();
-        // $list = User::whereIn('role', [4])->get();
-        // dd($list);
-        return view('layouts.sidebar',['list'=>$list]);
-    }
 
 }     
-// @foreach ($list as $list)
-// {{$list->user_id}}
-// @endforeach

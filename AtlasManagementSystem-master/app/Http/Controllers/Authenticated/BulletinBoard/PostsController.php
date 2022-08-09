@@ -13,6 +13,9 @@ use App\Models\Users\User;
 use App\Http\Requests\BulletinBoard\PostFormRequest;
 use Auth;
 
+// validatorを使用
+use Illuminate\Support\Facades\Validator;
+
 class PostsController extends Controller
 {
     public function show(Request $request){
@@ -57,11 +60,23 @@ class PostsController extends Controller
         return redirect()->route('post.show');
     }
 
+    //投稿編集
     public function postEdit(Request $request){
+
+        $rules = [
+            // バリデーションルール定義
+            'post' => 'required|string|max:5',
+            'post_title' => 'required|string|max:1',
+              ];
+        // 引数の値がバリデートされればリダイレクト、されなければ引き続き処理の実行
+        $this->validate($request, $rules);
+      
         Post::where('id', $request->post_id)->update([
             'post_title' => $request->post_title,
-            'post' => $request->post_body,
+            'post' => $request->post,
+            
         ]);
+        
         return redirect()->route('post.detail', ['id' => $request->post_id]);
     }
 

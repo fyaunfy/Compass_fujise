@@ -207,7 +207,7 @@
         <div class="mt-3">
           <label class="d-block m-0" style="font-size:13px">確認用パスワード</label>
           <div class="border-bottom border-primary">
-            <input type="password" class="border-0 w-100 password_confirmation" name="password_confirmation'">
+            <input type="password" class="border-0 w-100 password_confirmation" name="password_confirmation">
           </div>
           @if ($errors->has('password'))
               <p>{{$errors->first('password')}}</p>

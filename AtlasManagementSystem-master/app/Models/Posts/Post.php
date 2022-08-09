@@ -27,8 +27,11 @@ class Post extends Model
         // リレーションの定義
     }
 
+
     // コメント数
     public function commentCounts($post_id){
         return Post::with('postComments')->find($post_id)->postComments();
     }
+
+    // {{commentCounts()->count()}}
 }

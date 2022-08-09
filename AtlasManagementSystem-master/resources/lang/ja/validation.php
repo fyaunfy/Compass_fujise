@@ -147,10 +147,17 @@ return [
     */
 
     'attributes' => [
-        'username' => 'ユーザー名',
+        'over_name' => '性',
+        'under_name' => '名',
+        'over_name_kana' => 'セイ',
+        'under_name_kana' => 'メイ',
+        'sex' => '性別',
         'mail' => 'メールアドレス',
+        'old_year' => '年',
+        'old_month' => '月',
+        'old_day' => '日',
         'password' => 'パスワード',
-        'newPost' => '投稿',
+        'role' => '役職',
     ],
 
 ];

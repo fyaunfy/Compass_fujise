@@ -61,6 +61,5 @@ Route::group(['middleware' => 'auth'], function(){
             Route::post('/user/profile/edit', 'UsersController@userEdit')->name('user.edit');
         });
 
-        Route::get('/layouts','UsersController@userSide');
     });
 });
