@@ -23,6 +23,11 @@ class PostsController extends Controller
         $categories = MainCategory::get();
         $like = new Like;
         $post_comment = new Post;
+        //こちらを追加した。
+        $comment = new PostComment;
+
+        $sub_categories = SubCategory::get();
+
         if(!empty($request->keyword)){
             $posts = Post::with('user', 'postComments')
             ->where('post_title', 'like', '%'.$request->keyword.'%')
@@ -38,7 +43,7 @@ class PostsController extends Controller
             $posts = Post::with('user', 'postComments')
             ->where('user_id', Auth::id())->get();
         }
-        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment'));
+        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment', 'comment', 'sub_categories'));
     }
 
     public function postDetail($post_id){
@@ -46,9 +51,11 @@ class PostsController extends Controller
         return view('authenticated.bulletinboard.post_detail', compact('post'));
     }
 
+    //カテゴリーの投稿
     public function postInput(){
         $main_categories = MainCategory::get();
-        return view('authenticated.bulletinboard.post_create', compact('main_categories'));
+        $sub_categories = SubCategory::get();
+        return view('authenticated.bulletinboard.post_create', compact('main_categories','sub_categories'));
     }
 
     public function postCreate(PostFormRequest $request){
@@ -65,8 +72,8 @@ class PostsController extends Controller
 
         $rules = [
             // バリデーションルール定義
-            'post' => 'required|string|max:5',
-            'post_title' => 'required|string|max:1',
+            'post' => 'required|string|max:5000',
+            'post_title' => 'required|string|max:100',
               ];
         // 引数の値がバリデートされればリダイレクト、されなければ引き続き処理の実行
         $this->validate($request, $rules);
@@ -84,40 +91,67 @@ class PostsController extends Controller
         Post::findOrFail($id)->delete();
         return redirect()->route('post.show');
     }
+
+    //メインのカテゴリーの新規登録
     public function mainCategoryCreate(Request $request){
         MainCategory::create(['main_category' => $request->main_category_name]);
         return redirect()->route('post.input');
     }
 
+    // サブカテゴリーの新規登録
+    public function subCategoryCreate(Request $request){
+        // dd($request);
+        SubCategory::create(['sub_category' => $request->sub_category_name]);
+        return redirect()->route('post.input');
+    }
+
+    //コメントの登録
     public function commentCreate(Request $request){
+
         PostComment::create([
             'post_id' => $request->post_id,
             'user_id' => Auth::id(),
             'comment' => $request->comment
         ]);
+
+       
+
         return redirect()->route('post.detail', ['id' => $request->post_id]);
     }
 
+    //ボード
     public function myBulletinBoard(){
+        // ログインしているユーザーの記事の取得
         $posts = Auth::user()->posts()->get();
         $like = new Like;
+
         return view('authenticated.bulletinboard.post_myself', compact('posts', 'like'));
     }
 
     public function likeBulletinBoard(){
+        
         $like_post_id = Like::with('users')->where('like_user_id', Auth::id())->get('like_post_id')->toArray();
         $posts = Post::with('user')->whereIn('id', $like_post_id)->get();
         $like = new Like;
         return view('authenticated.bulletinboard.post_like', compact('posts', 'like'));
     }
 
+    // いいねする
     public function postLike(Request $request){
+
+        //ログインしているユーザーがいいねしたとき
         Auth::user()->likes()->attach($request->post_id);
+        // javaScriptに移動
         return response()->json();
     }
 
+    //いいね解除
     public function postUnLike(Request $request){
+
+        //ログインしているユーザーがいいねを解除したとき
         Auth::user()->likes()->detach($request->post_id);
+
+        // javaScriptに移動
         return response()->json();
     }
 }

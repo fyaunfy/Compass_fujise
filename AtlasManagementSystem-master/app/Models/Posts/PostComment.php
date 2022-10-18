@@ -24,4 +24,5 @@ class PostComment extends Model
     public function commentUser($user_id){
         return User::where('id', $user_id)->first();
     }
+
 }

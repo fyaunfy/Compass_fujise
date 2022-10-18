@@ -35,13 +35,28 @@
   @can('admin')
   <div class="w-25 ml-auto mr-auto">
     <div class="category_area mt-5 p-5">
+
+      <form action="{{ route('main.category.create') }}" method="post" id="mainCategoryRequest">{{ csrf_field() }}
+
       <div class="">
         <p class="m-0">メインカテゴリー</p>
         <input type="text" class="w-100" name="main_category_name" form="mainCategoryRequest">
         <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="mainCategoryRequest">
       </div>
+
+      </form>
+
+
       <!-- サブカテゴリー追加 -->
-      <form action="{{ route('main.category.create') }}" method="post" id="mainCategoryRequest">{{ csrf_field() }}</form>
+      <form action="{{ route('sub.category.create') }}" method="post" id="subCategoryRequest">{{ csrf_field() }}
+        
+        <div class="">
+          <p class="m-0">サブカテゴリー</p>
+          <input type="text" class="w-100" name="sub_category_name" form="subCategoryRequest">
+          <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="subCategoryRequest">
+        </div>
+      </form>
+
     </div>
   </div>
   @endcan

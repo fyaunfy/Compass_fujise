@@ -60,6 +60,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Posts\Post');
     }
 
+        // 多対多 リレーション設定
+        // 第一引数には使用するモデル
+        // 第二引数には使用するテーブル名
+        // 第三引数にはリレーションを定義しているモデルの外部キー名
+        // 第四引数には結合するモデルの外部キー名
+
     public function calendars(){
         return $this->belongsToMany('App\Models\Calendars\Calendar', 'calendar_users', 'user_id', 'calendar_id')->withPivot('user_id', 'id');
     }
@@ -68,6 +74,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Calendars\ReserveSettings', 'reserve_setting_users', 'user_id', 'reserve_setting_id')->withPivot('id');
     }
 
+    //いいね機能のリレーション
     public function likes(){
         return $this->belongsToMany('App\Models\Posts\Like', 'likes', 'like_user_id', 'like_post_id')->withPivot('id');
     }

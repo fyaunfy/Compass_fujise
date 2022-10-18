@@ -12,11 +12,17 @@ class SubCategory extends Model
         'main_category_id',
         'sub_category',
     ];
+
+    // １対 多 の１側なので単数形
     public function mainCategory(){
         // リレーションの定義
+        return $this->belongsTo('App\mainCategory');
     }
+
+    
 
     public function posts(){
         // リレーションの定義
+
     }
 }
