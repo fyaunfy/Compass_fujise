@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class UsersController extends Controller
 {
 
+    
     public function showUsers(Request $request){
         $keyword = $request->keyword;
         $category = $request->category;

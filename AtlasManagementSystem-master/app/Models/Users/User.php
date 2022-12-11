@@ -79,6 +79,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Posts\Like', 'likes', 'like_user_id', 'like_post_id')->withPivot('id');
     }
 
+    
     public function subjects(){
         // リレーションの定義
         return $this->belongsToMany('App\Models\Users\User', 'subject_users', 'user_id', 'subject_id');

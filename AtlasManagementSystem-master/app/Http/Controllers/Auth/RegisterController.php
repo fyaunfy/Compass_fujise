@@ -129,7 +129,6 @@ class RegisterController extends Controller
                 'password' => bcrypt($request->password)
             ]);
 
-
             // findOrFailメソッドは一致するIDが見つからなければエラーを返す役割
             $user = User::findOrFail($user_get->id);
             //多対多のリレーションで結合

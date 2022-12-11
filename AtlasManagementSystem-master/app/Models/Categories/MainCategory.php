@@ -16,7 +16,8 @@ class MainCategory extends Model
     // 「１対多」の「多」側 → メソッド名は複数形
     public function subCategories(){
         // リレーションの定義
-        return $this->hasMany('App\SubCategory');
+        return $this->hasMany('App\Models\Categories\SubCategory');
     }
+
 
 }

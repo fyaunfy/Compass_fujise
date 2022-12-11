@@ -14,6 +14,7 @@ class Post extends Model
         'post_title',
         'post',
     ];
+    
 
     public function user(){
         return $this->belongsTo('App\Models\Users\User');
@@ -25,6 +26,7 @@ class Post extends Model
 
     public function subCategories(){
         // リレーションの定義
+        
     }
 
     // コメント数

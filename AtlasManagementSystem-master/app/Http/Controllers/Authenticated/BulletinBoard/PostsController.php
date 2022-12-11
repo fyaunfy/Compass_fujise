@@ -16,16 +16,22 @@ use Auth;
 // validatorを使用
 use Illuminate\Support\Facades\Validator;
 
+
 class PostsController extends Controller
 {
     public function show(Request $request){
-        $posts = Post::with('user', 'postComments')->get();
-        $categories = MainCategory::get();
-        $like = new Like;
-        $post_comment = new Post;
-        //こちらを追加した。
-        $comment = new PostComment;
 
+        // with(...)の()の中は、モデルのメソッドをviewに持って来ることができる。
+        $posts = Post::with('user', 'postComments')->get();
+
+        $categories = MainCategory::get();
+
+        $like = new Like;
+
+        //既存
+        $post_comment = new Post;
+
+        //追加
         $sub_categories = SubCategory::get();
 
         if(!empty($request->keyword)){
@@ -43,18 +49,20 @@ class PostsController extends Controller
             $posts = Post::with('user', 'postComments')
             ->where('user_id', Auth::id())->get();
         }
-        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment', 'comment', 'sub_categories'));
+        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment','sub_categories'));
     }
 
     public function postDetail($post_id){
         $post = Post::with('user', 'postComments')->findOrFail($post_id);
         return view('authenticated.bulletinboard.post_detail', compact('post'));
     }
+    
 
-    //カテゴリーの投稿
+    
     public function postInput(){
         $main_categories = MainCategory::get();
         $sub_categories = SubCategory::get();
+        
         return view('authenticated.bulletinboard.post_create', compact('main_categories','sub_categories'));
     }
 
@@ -98,12 +106,41 @@ class PostsController extends Controller
         return redirect()->route('post.input');
     }
 
+    // SubCategory::create(['sub_category' => $request->sub_category_name]);
+    // この記述だけでは、正しくレコードの登録ができないため、エラーが出ます。
+
+    // 上画像(私のPCのDBなので登録されているテキストは気にしないでください…！)のように、
+    // サブカテゴリーにレコードを登録するには、main_category_idのカラムにも値を登録する必要があります。
+// このカラムが空の状態なので、こちらも合わせて設定をしてみてください！
+
+    // // サブカテゴリーの新規登録
+    // public function subCategoryCreate(Request $request){
+
+    //     $sub_categories = $request->input('sub_category_name');
+        
+    //     // SQLSTATE[HY000]: General error: 1366 Incorrect integer value:
+    //     $main_categories = MainCategory::get();
+    //     $sub_categories = SubCategory::query()
+    //     ->whereIn('main_category_id', $main_categories->pluck('id')->toArray())
+    //     ->get();
+    //     // dd($sub_categories);
+
+    //     return redirect()->route('post.input');
+    // }
+
     // サブカテゴリーの新規登録
     public function subCategoryCreate(Request $request){
-        // dd($request);
-        SubCategory::create(['sub_category' => $request->sub_category_name]);
+
+        SubCategory::create(['main_category_id' => $request->main_category_id,
+        'sub_category' => $request->sub_category_name,
+    ]);
         return redirect()->route('post.input');
     }
+    // public function subCategoryCreate(Request $request){
+    //     return view('sub.category.create', [
+    //         'main_category' => MainCategory::with('subCategories')->get(),
+    //     ]);
+    // }
 
     //コメントの登録
     public function commentCreate(Request $request){
@@ -113,8 +150,6 @@ class PostsController extends Controller
             'user_id' => Auth::id(),
             'comment' => $request->comment
         ]);
-
-       
 
         return redirect()->route('post.detail', ['id' => $request->post_id]);
     }
@@ -154,4 +189,6 @@ class PostsController extends Controller
         // javaScriptに移動
         return response()->json();
     }
+
+
 }
