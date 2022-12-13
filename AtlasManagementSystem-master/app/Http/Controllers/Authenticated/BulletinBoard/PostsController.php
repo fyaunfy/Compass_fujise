@@ -128,6 +128,9 @@ class PostsController extends Controller
     //     return redirect()->route('post.input');
     // }
 
+    // @foreach($sub_categories as $sub_category)
+    // @endforeach
+
     // サブカテゴリーの新規登録
     public function subCategoryCreate(Request $request){
 
