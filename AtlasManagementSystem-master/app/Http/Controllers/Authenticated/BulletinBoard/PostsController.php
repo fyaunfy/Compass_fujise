@@ -139,11 +139,6 @@ class PostsController extends Controller
     ]);
         return redirect()->route('post.input');
     }
-    // public function subCategoryCreate(Request $request){
-    //     return view('sub.category.create', [
-    //         'main_category' => MainCategory::with('subCategories')->get(),
-    //     ]);
-    // }
 
     //コメントの登録
     public function commentCreate(Request $request){

@@ -43,12 +43,22 @@
       </div>
       <div>
         @if($user->role == 4)
-        <span>選択科目 :</span>
+        
+        <span>選択科目 :
+          
+        @foreach($subject_lists as $subject_list)
+        <span>{{ $subject_list->subject }}</span>
+        @endforeach
+        </span>
+        
         @endif
       </div>
     </div>
     @endforeach
+
+
   </div>
+
   <div class="search_area w-25 border">
     <div class="">
       <div>

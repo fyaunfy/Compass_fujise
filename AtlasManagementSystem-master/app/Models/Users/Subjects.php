@@ -12,10 +12,20 @@ class Subjects extends Model
 
 
     protected $fillable = [
-        'subject'
+        'subject_id',
+        'user_id',
     ];
 
+        // 多対多　リレーション設定
+        // 第一引数には使用するモデル
+        // 第二引数には使用するテーブル名
+        // 第三引数にはリレーションを定義しているモデルの外部キー名
+        // 第四引数には結合するモデルの外部キー名
+        
+    // ユーザーと教科のリレーション
     public function users(){
-        return;// リレーションの定義
+        return $this->belongsToMany('App\Models\Users\Subjects', 'subject_users', 'subject_id', 'user_id');
     }
+
+
 }

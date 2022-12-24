@@ -28,7 +28,12 @@ class UsersController extends Controller
         $userFactory = new SearchResultFactories();
         $users = $userFactory->initializeUsers($keyword, $category, $updown, $gender, $role, $subjects);
         $subjects = Subjects::all();
-        return view('authenticated.users.search', compact('users', 'subjects'));
+        // dd($subjects);
+
+        $subject_lists = Subjects::with('users')->get();
+        // dd($subject_lists);
+
+        return view('authenticated.users.search', compact('users', 'subjects','subject_lists'));
     }
 
     public function userProfile($id){
@@ -42,6 +47,17 @@ class UsersController extends Controller
         $user->subjects()->sync($request->subjects);
         return redirect()->route('user.profile', ['id' => $request->user_id]);
     }
+
+    // @foreach($post->postComments as $comment)
+    // <div class="comment_area border-top">
+    //   <p>
+    //     <span>{{ $comment->commentUser($comment->user_id)->over_name }}</span>
+    //     <span>{{ $comment->commentUser($comment->user_id)->under_name }}</span>さん
+    //   </p>
+    //   <p>{{ $comment->comment }}</p>
+    // </div>
+    // @endforeach
+
 
 
 }     

@@ -31,7 +31,9 @@ class User extends Authenticatable
         'sex',
         'birth_day',
         'role',
-        'password'
+        'password',
+        'subject_id',
+        'user_id',
     ];
 
     
@@ -79,11 +81,13 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Posts\Like', 'likes', 'like_user_id', 'like_post_id')->withPivot('id');
     }
 
-    
+    // ユーザーと教科のリレーション
     public function subjects(){
-        // リレーションの定義
+        // 多対多リレーションの定義
         return $this->belongsToMany('App\Models\Users\User', 'subject_users', 'user_id', 'subject_id');
     }
+
+
 
     // いいねしているかどうか
     public function is_Like($post_id){
