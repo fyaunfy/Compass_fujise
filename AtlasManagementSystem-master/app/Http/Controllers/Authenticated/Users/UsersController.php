@@ -24,16 +24,19 @@ class UsersController extends Controller
         $updown = $request->updown;
         $gender = $request->sex;
         $role = $request->role;
-        $subjects = null;// ここで検索時の科目を受け取る
+        $subjects = $request->subjects;// ここで検索時の科目を受け取る
+
+        // dd($request->subjects);
+        // dd($subjects);
         $userFactory = new SearchResultFactories();
         $users = $userFactory->initializeUsers($keyword, $category, $updown, $gender, $role, $subjects);
         $subjects = Subjects::all();
-        // dd($subjects);
 
-        $subject_lists = Subjects::with('users')->get();
-        // dd($subject_lists);
+        $subject_lists = User::with('subjects')->findOrFail($id);
 
-        return view('authenticated.users.search', compact('users', 'subjects','subject_lists'));
+        // ,'subjects_lists'
+
+        return view('authenticated.users.search', compact('users', 'subjects'));
     }
 
     public function userProfile($id){
@@ -47,16 +50,6 @@ class UsersController extends Controller
         $user->subjects()->sync($request->subjects);
         return redirect()->route('user.profile', ['id' => $request->user_id]);
     }
-
-    // @foreach($post->postComments as $comment)
-    // <div class="comment_area border-top">
-    //   <p>
-    //     <span>{{ $comment->commentUser($comment->user_id)->over_name }}</span>
-    //     <span>{{ $comment->commentUser($comment->user_id)->under_name }}</span>さん
-    //   </p>
-    //   <p>{{ $comment->comment }}</p>
-    // </div>
-    // @endforeach
 
 
 

@@ -106,31 +106,6 @@ class PostsController extends Controller
         return redirect()->route('post.input');
     }
 
-    // SubCategory::create(['sub_category' => $request->sub_category_name]);
-    // この記述だけでは、正しくレコードの登録ができないため、エラーが出ます。
-
-    // 上画像(私のPCのDBなので登録されているテキストは気にしないでください…！)のように、
-    // サブカテゴリーにレコードを登録するには、main_category_idのカラムにも値を登録する必要があります。
-// このカラムが空の状態なので、こちらも合わせて設定をしてみてください！
-
-    // // サブカテゴリーの新規登録
-    // public function subCategoryCreate(Request $request){
-
-    //     $sub_categories = $request->input('sub_category_name');
-        
-    //     // SQLSTATE[HY000]: General error: 1366 Incorrect integer value:
-    //     $main_categories = MainCategory::get();
-    //     $sub_categories = SubCategory::query()
-    //     ->whereIn('main_category_id', $main_categories->pluck('id')->toArray())
-    //     ->get();
-    //     // dd($sub_categories);
-
-    //     return redirect()->route('post.input');
-    // }
-
-    // @foreach($sub_categories as $sub_category)
-    // @endforeach
-
     // サブカテゴリーの新規登録
     public function subCategoryCreate(Request $request){
 
